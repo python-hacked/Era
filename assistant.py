@@ -28,13 +28,17 @@ def listen_for_command():
     except sr.RequestError as e:
         print("Could not request results from Google Speech Recognition service; {0}".format(e))
         return None
-
 engine = pyttsx3.init()
 
+voices = engine.getProperty('voices')
+for voice in voices:
+    if "female" in voice.name.lower():
+        engine.setProperty('voice', voice.id)
+        break
+
+engine.say("This is an example of a female voice.")
+engine.runAndWait()
 def speak(text):
-    """
-    Convert text to speech.
-    """
     engine.say(text)
     engine.runAndWait()
 
@@ -73,6 +77,10 @@ def get_battery_percentage():
         return battery.percent
     else:
         return "Battery information not available." 
+def blog(request):
+    subprocess.Popen("this is a bater start point for cunversactiopn system ")
+
+
 
 def get_news(query):
     # Craft the Google search URL based on the user's query
@@ -127,15 +135,12 @@ def text_to_speech(text):
     engine.runAndWait()   
 
 def greet():
-    speak("Hello, sir. How may I help you?")
+    speak("Hello, Satish what you want to today?")
     print("Hello, sir. How may I help you?")
 
 def process_command(command):
-    """
-    Process the user's command and execute the appropriate action.
-    """
     print("Received command:", command)  
-    if "jarvis" in command.lower():
+    if "anu" in command.lower():
         command = command[6:].strip()
         print("Executing command:", command)
         if command.lower() == "open youtube":
@@ -154,26 +159,27 @@ def process_command(command):
         elif command.lower().startswith("open folder"):
             folder_path = command[11:].strip()
             os.startfile(folder_path)
-            speak("ठीक है, सर. फ़ोल्डर खोल रहा हूँ।")
+            speak(u"ठीक है, सर. फ़ोल्डर खोल रहा हूँ।")
         elif command.lower() == "open file explorer":
             os.system("explorer")
-            speak("ठीक है, सर. फ़ाइल एक्सप्लोरर खोल रहा हूँ।")
+            speak(u"ठीक है, सर. फ़ाइल एक्सप्लोरर खोल रहा हूँ।")
         elif "battery percentage" in command.lower():
             battery_percentage = get_battery_percentage()
-            speak(f"सर, बैटरी स्तर {battery_percentage} प्रतिशत है।")
+            speak(u"सर, बैटरी स्तर {battery_percentage} प्रतिशत है।")
         elif "news" in command.lower():
             language = detect_language(command)  # Function to detect language
             if language == "hi":
-                speak("आपके लिए खबरें ला रहा हूँ।")
+                speak(u"आपके लिए खबरें ला रहा हूँ।")
             else:
-                speak("Bringing you the latest news.")
+                speak(u"Bringing you the latest news.")
             main(language)  # Call the main function to fetch and read news articles
         else:
-            print("क्षमा करें, मुझे आपका आदेश समझ में नहीं आया।")
-            speak("क्षमा करें, मुझे आपका आदेश समझ में नहीं आया।")
+            print(u"क्षमा करें, मुझे आपका आदेश समझ में नहीं आया।")
+            speak(u"क्षमा करें, मुझे आपका आदेश समझ में नहीं आया।")
     else:
-        print("क्षमा करें, मुझे आपका आदेश समझ में नहीं आया।")
-        speak("क्षमा करें, मुझे आपका आदेश समझ में नहीं आया।")
+        print(u"क्षमा करें, मुझे आपका आदेश समझ में नहीं आया।")
+        speak(u"क्षमा करें, मुझे आपका आदेश समझ में नहीं आया।")
+
 
 def detect_language(text):
     """
